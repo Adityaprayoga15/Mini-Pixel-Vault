@@ -230,13 +230,21 @@ async function addTodo() {
     showToast("✨ Tugas baru berhasil ditambahkan!");
 }
 
-function setQuickDate(daysOffset) {
-    const d = new Date();
-    d.setDate(d.getDate() + daysOffset);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    document.getElementById('dueDate').value = `${year}-${month}-${day}`;
+function addDays(days) {
+    const input = document.getElementById('dueDate');
+    let baseDate = input.value ? new Date(input.value) : new Date();
+    
+    if (isNaN(baseDate.getTime())) {
+        baseDate = new Date();
+    }
+    
+    baseDate.setDate(baseDate.getDate() + days);
+    
+    const year = baseDate.getFullYear();
+    const month = String(baseDate.getMonth() + 1).padStart(2, '0');
+    const day = String(baseDate.getDate()).padStart(2, '0');
+    input.value = `${year}-${month}-${day}`;
+}-${month}-${day}`;
 }
 
 async function deleteTodo(id) {
@@ -377,4 +385,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.openSettings = openSettings;
 
-window.setQuickDate = setQuickDate;
+window.addDays = addDays;
