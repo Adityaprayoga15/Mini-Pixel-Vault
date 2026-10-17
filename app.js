@@ -174,11 +174,9 @@ function renderTodos(todos) {
 
     todoList.innerHTML = todos.map(todo => {
         let dateBadge = '';
-        if (todo.start_date || todo.due_date) {
-            const startStr = todo.start_date ? formatDate(todo.start_date) : '';
-            const dueStr = todo.due_date ? formatDate(todo.due_date) : '';
-            const dateText = startStr && dueStr ? `${startStr} ➔ ${dueStr}` : (dueStr ? `Target: ${dueStr}` : `Mulai: ${startStr}`);
-            dateBadge = `<span style="font-size: 0.75em; background: #F3EBDD; color: #7D4F28; padding: 2px 8px; border-radius: 6px; font-family: monospace; margin-left: 8px;">📅 ${dateText}</span>`;
+        if (todo.due_date) {
+            const dueStr = formatDate(todo.due_date);
+            dateBadge = `<span style="font-size: 0.75em; background: #F3EBDD; color: #7D4F28; padding: 2px 8px; border-radius: 6px; font-family: monospace; margin-left: 8px;">⏳ Deadline: ${dueStr}</span>`;
         }
 
         return `
@@ -207,7 +205,6 @@ function formatDate(dateString) {
 
 async function addTodo() {
     const taskText = taskInput.value.trim();
-    const startDate = document.getElementById('startDate').value || null;
     const dueDate = document.getElementById('dueDate').value || null;
 
     if (!taskText) return;
@@ -219,7 +216,7 @@ async function addTodo() {
 
     const { error } = await supabaseClient
         .from(TABLE_NAME)
-        .insert([{ task: taskText, completed: false, start_date: startDate, due_date: dueDate }]);
+        .insert([{ task: taskText, completed: false, due_date: dueDate }]);
 
     if (error) {
         console.error('Error adding todo:', error);
@@ -228,10 +225,18 @@ async function addTodo() {
     }
 
     taskInput.value = '';
-    document.getElementById('startDate').value = '';
     document.getElementById('dueDate').value = '';
     fetchTodos();
     showToast("✨ Tugas baru berhasil ditambahkan!");
+}
+
+function setQuickDate(daysOffset) {
+    const d = new Date();
+    d.setDate(d.getDate() + daysOffset);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    document.getElementById('dueDate').value = `${year}-${month}-${day}`;
 }
 
 async function deleteTodo(id) {
@@ -371,3 +376,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.openSettings = openSettings;
+
+window.setQuickDate = setQuickDate;
