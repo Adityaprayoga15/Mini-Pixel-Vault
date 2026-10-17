@@ -84,7 +84,6 @@ function showToast(message) {
     setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);
-}!`);
 }
 
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
