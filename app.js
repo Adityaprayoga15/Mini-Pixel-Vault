@@ -1,4 +1,4 @@
-// 6 Hewan Pixel Art Resmi Buatan Adit
+// Daftar Hewan Pixel Art (6 Lama + 5 Baru)
 const animals = [
     { name: "Ayam", file: "Ayam.webp" },
     { name: "Beruang", file: "Beruang.webp" },
@@ -14,7 +14,7 @@ const animals = [
 ];
 
 let currentAvatar = localStorage.getItem('userAvatar') || 'Ayam.webp';
-let userName = "Aditya Prayoga";
+let userName = "Aditya";
 
 // Switch View Tabs & Navbar active states
 function switchTab(tabName) {
@@ -27,21 +27,21 @@ function switchTab(tabName) {
 
     if (tabName === 'vault') {
         document.getElementById('vaultView').classList.add('active');
-        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('VAULT'));
+        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('Vault'));
         if (btn) btn.classList.add('active');
     } else if (tabName === 'todo') {
         document.getElementById('todoView').classList.add('active');
-        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('TO-DO'));
+        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('To-Do'));
         if (btn) btn.classList.add('active');
         fetchTodos();
     } else if (tabName === 'profile') {
         document.getElementById('profileView').classList.add('active');
-        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('PROFIL'));
+        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('Profil'));
         if (btn) btn.classList.add('active');
         updateProfileAvatar();
     } else if (tabName === 'showcase') {
         document.getElementById('showcaseView').classList.add('active');
-        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('SHOWCASE'));
+        const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes('Showcase'));
         if (btn) btn.classList.add('active');
         fetchShowcase();
     }
@@ -49,9 +49,16 @@ function switchTab(tabName) {
 
 function updateProfileAvatar() {
     const avatarImg = document.getElementById('profileAvatarImg');
-    if (avatarImg) {
-        avatarImg.src = `assets/${currentAvatar}`;
-    }
+    const headerAvatar = document.getElementById('headerAvatarImg');
+    const heroAvatar = document.getElementById('heroAvatarImg');
+    const activeNameEl = document.getElementById('activeAnimalName');
+    
+    const animalObj = animals.find(a => a.file === currentAvatar) || animals[0];
+    
+    if (avatarImg) avatarImg.src = `assets/${currentAvatar}`;
+    if (headerAvatar) headerAvatar.src = `assets/${currentAvatar}`;
+    if (heroAvatar) heroAvatar.src = `assets/${currentAvatar}`;
+    if (activeNameEl) activeNameEl.textContent = animalObj.name;
 }
 
 // Render Galeri Hewan
@@ -86,10 +93,26 @@ function showToast(message) {
     }, 2500);
 }
 
+// Modal Showcase
+function openShowcaseModal() {
+    document.getElementById('showcaseModal').style.display = 'flex';
+}
+function closeShowcaseModal() {
+    document.getElementById('showcaseModal').style.display = 'none';
+}
+
+function updateFileName(input) {
+    const label = document.getElementById('uploadLabel');
+    if (input.files && input.files[0]) {
+        label.textContent = '📄 ' + input.files[0].name;
+    } else {
+        label.textContent = 'Klik untuk pilih foto / dokumen proyek';
+    }
+}
+
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
-// Supabase Config via localStorage (Never needs manual code edits!)
 const DEFAULT_SUPABASE_URL = 'https://hremnjvcaklvppqyncti.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZW1uanZjYWtsdnBwcXluY3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDkzMDYsImV4cCI6MjEwNzgyNTMwNn0.7MpiCFGuK8W3YdwOMnLXTU2LerjUBkZX2af3skY3U2E'; // Kamu bisa simpan key asli di sini sekali saja
+const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZW1uanZjYWtsdnBwcXluY3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzA0NTB9...'; 
 const TABLE_NAME = 'todos'; 
 
 let SUPABASE_URL = localStorage.getItem('sb_url') || DEFAULT_SUPABASE_URL;
@@ -104,14 +127,13 @@ if (SUPABASE_URL && SUPABASE_ANON_KEY) {
     }
 }
 
-
 const taskInput = document.getElementById('taskInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const todoList = document.getElementById('todoList');
 
 async function fetchTodos() {
     if (!supabaseClient) {
-        todoList.innerHTML = `<li class="todo-item" style="color: #666; justify-content: center;">⚠️ Supabase Anon Key perlu disalin ulang di app.js</li>`;
+        todoList.innerHTML = `<li class="todo-item" style="color: #666; justify-content: center;">⚠️ Konfigurasi Supabase diperlukan.</li>`;
         return;
     }
 
@@ -122,16 +144,31 @@ async function fetchTodos() {
 
     if (error) {
         console.error('Error fetching todos:', error);
-        todoList.innerHTML = `<li class="todo-item" style="color: #ff5252; justify-content: center;">❌ Error: ${error.message}</li>`;
+        todoList.innerHTML = `<li class="todo-item" style="color: #D9534F; justify-content: center;">❌ Error: ${error.message}</li>`;
         return;
     }
 
     renderTodos(data);
+    updateProgress(data);
+}
+
+function updateProgress(todos) {
+    const pill = document.getElementById('progressPill');
+    const countEl = document.getElementById('completedCount');
+    if (!todos || todos.length === 0) {
+        if (pill) pill.textContent = '0% Selesai';
+        if (countEl) countEl.textContent = '0 selesai';
+        return;
+    }
+    const completed = todos.filter(t => t.completed).length;
+    const pct = Math.round((completed / todos.length) * 100);
+    if (pill) pill.textContent = `${pct}% Selesai`;
+    if (countEl) countEl.textContent = `${completed} dari ${todos.length} selesai`;
 }
 
 function renderTodos(todos) {
     if (!todos || todos.length === 0) {
-        todoList.innerHTML = `<li class="todo-item" style="color: #666; justify-content: center;">Belum ada tugas belajar. Yuk tambah satu!</li>`;
+        todoList.innerHTML = `<li class="todo-item" style="color: #8A7560; justify-content: center; font-style: italic;">🐾 Belum ada tugas belajar. Santai dulu atau tambah satu!</li>`;
         return;
     }
 
@@ -152,7 +189,7 @@ async function addTodo() {
     if (!taskText) return;
 
     if (!supabaseClient) {
-        alert("Harap isi SUPABASE_URL dan SUPABASE_ANON_KEY dengan benar di app.js!");
+        alert("Konfigurasi Supabase belum lengkap!");
         return;
     }
 
@@ -168,6 +205,7 @@ async function addTodo() {
 
     taskInput.value = '';
     fetchTodos();
+    showToast("✨ Tugas baru berhasil ditambahkan!");
 }
 
 async function deleteTodo(id) {
@@ -182,6 +220,7 @@ async function deleteTodo(id) {
     }
 
     fetchTodos();
+    showToast("🗑️ Tugas dihapus.");
 }
 
 async function toggleTodo(id, currentStatus) {
@@ -198,7 +237,7 @@ async function toggleTodo(id, currentStatus) {
     fetchTodos();
 }
 
-// Showcase logic with File Upload (FileReader API)
+// Showcase logic
 function fetchShowcase() {
     const showcaseGrid = document.getElementById('showcaseGrid');
     let projects = JSON.parse(localStorage.getItem('showcaseProjects')) || [
@@ -206,15 +245,15 @@ function fetchShowcase() {
     ];
 
     showcaseGrid.innerHTML = projects.map((proj, index) => `
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="showcase-card">
             <div>
-                ${proj.fileData ? `<div style="margin-bottom: 10px; text-align: center;"><img src="${proj.fileData}" alt="Project File" style="max-width: 100%; height: 120px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; background: #f8fafc; image-rendering: pixelated;"></div>` : ''}
-                <h4 style="font-size: 1em; color: #0f172a; margin-bottom: 6px;">✨ ${escapeHtml(proj.title)}</h4>
-                <p style="font-size: 0.85em; color: #64748b; line-height: 1.4; margin-bottom: 10px;">${escapeHtml(proj.desc)}</p>
+                ${proj.fileData ? `<div class="showcase-img-preview"><img src="${proj.fileData}" alt="Project File"></div>` : ''}
+                <h4 style="font-size: 1.05em; color: #3D2B1F; margin-bottom: 6px;">✨ ${escapeHtml(proj.title)}</h4>
+                <p style="font-size: 0.85em; color: #8A7560; line-height: 1.4; margin-bottom: 10px;">${escapeHtml(proj.desc)}</p>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 8px;">
-                <span style="font-size: 0.75em; color: #94a3b8; font-family: monospace;">${proj.fileName ? escapeHtml(proj.fileName) : 'Tanpa Berkas'}</span>
-                <button onclick="deleteShowcase(${index})" style="background: transparent; color: #ef4444; border: none; font-size: 0.8em; cursor: pointer;">Hapus</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8DCC8; padding-top: 10px;">
+                <span style="font-size: 0.75em; color: #8A7560; font-family: monospace;">${proj.fileName ? escapeHtml(proj.fileName) : 'Tanpa Berkas'}</span>
+                <button onclick="deleteShowcase(${index})" style="background: transparent; color: #D9534F; border: none; font-size: 0.8em; cursor: pointer; font-weight: 600;">Hapus</button>
             </div>
         </div>
     `).join('');
@@ -240,11 +279,11 @@ function addShowcaseProject() {
             projects.unshift({
                 title,
                 desc,
-                fileData: e.target.result, // Base64 data URL
+                fileData: e.target.result,
                 fileName: file.name
             });
             localStorage.setItem('showcaseProjects', JSON.stringify(projects));
-            resetAndRefreshShowcase();
+            finishShowcaseAdd();
         };
         
         reader.readAsDataURL(file);
@@ -256,16 +295,18 @@ function addShowcaseProject() {
             fileName: null
         });
         localStorage.setItem('showcaseProjects', JSON.stringify(projects));
-        resetAndRefreshShowcase();
+        finishShowcaseAdd();
     }
 }
 
-function resetAndRefreshShowcase() {
+function finishShowcaseAdd() {
     document.getElementById('projectTitle').value = '';
     document.getElementById('projectDesc').value = '';
     document.getElementById('projectFile').value = '';
+    document.getElementById('uploadLabel').textContent = 'Klik untuk pilih foto / dokumen proyek';
+    closeShowcaseModal();
     fetchShowcase();
-    alert("Proyek dan berkas berhasil diabadikan ke Showcase!");
+    showToast("🚀 Karya berhasil diabadikan ke Showcase!");
 }
 
 function deleteShowcase(index) {
@@ -273,11 +314,23 @@ function deleteShowcase(index) {
     projects.splice(index, 1);
     localStorage.setItem('showcaseProjects', JSON.stringify(projects));
     fetchShowcase();
+    showToast("🗑️ Proyek dihapus dari Showcase.");
 }
 
 function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
+// Global Window Bindings
+window.switchTab = switchTab;
+window.selectAvatar = selectAvatar;
+window.openShowcaseModal = openShowcaseModal;
+window.closeShowcaseModal = closeShowcaseModal;
+window.addShowcaseProject = addShowcaseProject;
+window.deleteShowcase = deleteShowcase;
+window.updateFileName = updateFileName;
+window.toggleTodo = toggleTodo;
+window.deleteTodo = deleteTodo;
 
 if (addTaskBtn) addTaskBtn.addEventListener('click', addTodo);
 if (taskInput) taskInput.addEventListener('keypress', (e) => {
@@ -287,23 +340,6 @@ if (taskInput) taskInput.addEventListener('keypress', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     renderAnimals();
     updateProfileAvatar();
-    console.log("Mini Pixel Vault & To-Do Dashboard loaded!");
+    fetchTodos();
+    console.log("Mini Pixel Vault (Cozy Café) loaded successfully!");
 });
-
-function updateFileName(input) {
-    const label = document.getElementById('uploadLabel');
-    if (input.files && input.files[0]) {
-        label.textContent = '📄 Berkas dipilih: ' + input.files[0].name;
-    } else {
-        label.textContent = 'Klik untuk pilih foto / dokumen proyek';
-    }
-}
-
-// Explicit window bindings for inline HTML onclick handlers
-window.switchTab = switchTab;
-window.selectAvatar = selectAvatar;
-window.addShowcaseProject = addShowcaseProject;
-window.deleteShowcase = deleteShowcase;
-window.updateFileName = updateFileName;
-window.toggleTodo = toggleTodo;
-window.deleteTodo = deleteTodo;
