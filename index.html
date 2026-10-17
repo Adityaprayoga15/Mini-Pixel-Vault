@@ -73,9 +73,17 @@
                 <div class="progress-pill" id="progressPill">0% Selesai</div>
             </div>
 
-            <div class="todo-form">
-                <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru...">
-                <button id="addTaskBtn">Tambah (+)</button>
+            <div class="todo-form" style="flex-direction: column; gap: 12px;">
+                <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru..." style="width: 100%; margin-bottom: 0;">
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85em; color: #8A7560;">
+                        <span>📅 Mulai:</span>
+                        <input type="date" id="startDate" class="form-input" style="margin-bottom: 0; padding: 6px 10px; font-size: 0.85em; width: auto;">
+                        <span>Target:</span>
+                        <input type="date" id="dueDate" class="form-input" style="margin-bottom: 0; padding: 6px 10px; font-size: 0.85em; width: auto;">
+                    </div>
+                    <button id="addTaskBtn" style="margin-left: auto;">Tambah Tugas (+)</button>
+                </div>
             </div>
             <ul id="todoList" class="todo-list"></ul>
         </section>

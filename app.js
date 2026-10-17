@@ -172,20 +172,44 @@ function renderTodos(todos) {
         return;
     }
 
-    todoList.innerHTML = todos.map(todo => `
-        <li class="todo-item ${todo.completed ? 'completed' : ''}">
-            <span onclick="toggleTodo('${todo.id}', ${todo.completed})" style="cursor: pointer; flex: 1;">
-                ${todo.completed ? '☑' : '☐'} ${escapeHtml(todo.task || '')}
-            </span>
-            <div class="todo-actions">
-                <button class="delete-btn" onclick="deleteTodo('${todo.id}')">Hapus</button>
-            </div>
-        </li>
-    `).join('');
+    todoList.innerHTML = todos.map(todo => {
+        let dateBadge = '';
+        if (todo.start_date || todo.due_date) {
+            const startStr = todo.start_date ? formatDate(todo.start_date) : '';
+            const dueStr = todo.due_date ? formatDate(todo.due_date) : '';
+            const dateText = startStr && dueStr ? `${startStr} ➔ ${dueStr}` : (dueStr ? `Target: ${dueStr}` : `Mulai: ${startStr}`);
+            dateBadge = `<span style="font-size: 0.75em; background: #F3EBDD; color: #7D4F28; padding: 2px 8px; border-radius: 6px; font-family: monospace; margin-left: 8px;">📅 ${dateText}</span>`;
+        }
+
+        return `
+            <li class="todo-item ${todo.completed ? 'completed' : ''}">
+                <span onclick="toggleTodo('${todo.id}', ${todo.completed})" style="cursor: pointer; flex: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                    <span>${todo.completed ? '☑' : '☐'}</span>
+                    <span>${escapeHtml(todo.task || '')}</span>
+                    ${dateBadge}
+                </span>
+                <div class="todo-actions">
+                    <button class="delete-btn" onclick="deleteTodo('${todo.id}')">Hapus</button>
+                </div>
+            </li>
+        `;
+    }).join('');
+}
+
+function formatDate(dateString) {
+    const options = { day: 'numeric', month: 'short' };
+    try {
+        return new Date(dateString).toLocaleDateString('id-ID', options);
+    } catch(e) {
+        return dateString;
+    }
 }
 
 async function addTodo() {
     const taskText = taskInput.value.trim();
+    const startDate = document.getElementById('startDate').value || null;
+    const dueDate = document.getElementById('dueDate').value || null;
+
     if (!taskText) return;
 
     if (!supabaseClient) {
@@ -195,7 +219,7 @@ async function addTodo() {
 
     const { error } = await supabaseClient
         .from(TABLE_NAME)
-        .insert([{ task: taskText, completed: false }]);
+        .insert([{ task: taskText, completed: false, start_date: startDate, due_date: dueDate }]);
 
     if (error) {
         console.error('Error adding todo:', error);
@@ -204,6 +228,8 @@ async function addTodo() {
     }
 
     taskInput.value = '';
+    document.getElementById('startDate').value = '';
+    document.getElementById('dueDate').value = '';
     fetchTodos();
     showToast("✨ Tugas baru berhasil ditambahkan!");
 }
