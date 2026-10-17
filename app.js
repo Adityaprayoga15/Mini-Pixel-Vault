@@ -5,7 +5,12 @@ const animals = [
     { name: "Gorila", file: "Gorila.webp" },
     { name: "Kucing", file: "Kucing.webp" },
     { name: "Monyet", file: "Monyet.webp" },
-    { name: "Rubah", file: "Rubah.webp" }
+    { name: "Rubah", file: "Rubah.webp" },
+    { name: "Hamster", file: "Hamster.webp" },
+    { name: "Kelinci", file: "Kelinci.webp" },
+    { name: "Panda", file: "Panda.webp" },
+    { name: "Pinguin", file: "Pinguin.webp" },
+    { name: "Singa", file: "Singa.webp" }
 ];
 
 let currentAvatar = localStorage.getItem('userAvatar') || 'Ayam.webp';
