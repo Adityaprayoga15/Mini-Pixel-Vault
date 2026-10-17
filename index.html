@@ -73,22 +73,23 @@
                 <div class="progress-pill" id="progressPill">0% Selesai</div>
             </div>
 
-            <div class="todo-form" style="flex-direction: column; gap: 10px;">
-                <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru..." style="width: 100%; margin-bottom: 0;">
-                
-                <div class="todo-toolbar">
+            <div class="todo-form-container">
+                <div class="todo-main-row">
+                    <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru..." class="form-input" style="margin-bottom: 0; flex: 1;">
+                    <button id="addTaskBtn" class="primary-btn" style="padding: 12px 24px;">Tambah Tugas (+)</button>
+                </div>
+                <div class="todo-sub-toolbar">
                     <div class="deadline-picker-group">
                         <span class="deadline-icon">⏳</span>
                         <span class="deadline-label">Deadline:</span>
                         <input type="date" id="dueDate" class="date-input-clean">
-                        <button type="button" class="chip-btn" onclick="clearDueDate()" title="Hapus Tanggal" style="background: #F3EBDD; color: #D9534F; border-color: #F5C6CB;">✕ Reset</button>
-                        <div class="quick-chips">
-                            <button type="button" class="chip-btn" onclick="addDays(1)">+1 Hari</button>
-                            <button type="button" class="chip-btn" onclick="addDays(2)">+2 Hari</button>
-                            <button type="button" class="chip-btn" onclick="addDays(7)">+1 Minggu</button>
-                        </div>
+                        <button type="button" class="reset-chip-btn" onclick="clearDueDate()" title="Reset Tanggal">✕</button>
                     </div>
-                    <button id="addTaskBtn" class="primary-btn" style="padding: 10px 20px; font-size: 0.9em;">Tambah Tugas (+)</button>
+                    <div class="quick-chips">
+                        <button type="button" class="chip-btn-soft" onclick="addDays(1)">Besok</button>
+                        <button type="button" class="chip-btn-soft" onclick="addDays(2)">Lusa</button>
+                        <button type="button" class="chip-btn-soft" onclick="addDays(7)">Minggu depan</button>
+                    </div>
                 </div>
             </div>
             <ul id="todoList" class="todo-list"></ul>

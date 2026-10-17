@@ -804,3 +804,65 @@ footer {
     color: #FFFDF8;
     border-color: #C8794A;
 }
+
+/* Claude UX Redesign for To-Do Form */
+.todo-form-container {
+    background: #FAF5EC;
+    border: 1px solid #E8DCC8;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.todo-main-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.todo-sub-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px dashed #E8DCC8;
+}
+
+.chip-btn-soft {
+    background: #F2D9B8;
+    border: none;
+    color: #7D4F28;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip-btn-soft:hover {
+    background: #C8794A;
+    color: #FFFDF8;
+}
+
+.reset-chip-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8DCC8;
+    color: #D9534F;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.8em;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.reset-chip-btn:hover {
+    background: #F8D7DA;
+}
