@@ -112,7 +112,7 @@ function updateFileName(input) {
 
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
 const DEFAULT_SUPABASE_URL = 'https://hremnjvcaklvppqyncti.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = ''; 
+const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZW1uanZjYWtsdnBwcXluY3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDkzMDYsImV4cCI6MjEwNzgyNTMwNn0.7MpiCFGuK8W3YdwOMnLXTU2LerjUBkZX2af3skY3U2E'; 
 const TABLE_NAME = 'todos'; 
 
 let SUPABASE_URL = localStorage.getItem('sb_url') || DEFAULT_SUPABASE_URL;
