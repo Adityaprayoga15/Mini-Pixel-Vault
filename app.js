@@ -112,7 +112,7 @@ function updateFileName(input) {
 
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
 const DEFAULT_SUPABASE_URL = 'https://hremnjvcaklvppqyncti.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZW1uanZjYWtsdnBwcXluY3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzA0NTB9...'; 
+const DEFAULT_SUPABASE_ANON_KEY = ''; 
 const TABLE_NAME = 'todos'; 
 
 let SUPABASE_URL = localStorage.getItem('sb_url') || DEFAULT_SUPABASE_URL;
@@ -133,7 +133,7 @@ const todoList = document.getElementById('todoList');
 
 async function fetchTodos() {
     if (!supabaseClient) {
-        todoList.innerHTML = `<li class="todo-item" style="color: #666; justify-content: center;">⚠️ Konfigurasi Supabase diperlukan.</li>`;
+        todoList.innerHTML = `<li class="todo-item" style="color: #C8794A; justify-content: center; flex-direction: column; gap: 5px; text-align: center;"><span>⚠️ Supabase Anon Key belum diatur di browser ini.</span><span style="font-size: 0.85em; color: #8A7560;">Klik ikon roda gigi ⚙️ di pojok kanan atas header untuk memasukkan key kamu sekali saja.</span></li>`;
         return;
     }
 
@@ -343,3 +343,5 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTodos();
     console.log("Mini Pixel Vault (Cozy Café) loaded successfully!");
 });
+
+window.openSettings = openSettings;

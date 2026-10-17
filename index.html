@@ -26,6 +26,7 @@
                 <button class="nav-btn" onclick="switchTab('showcase')">🎨 Showcase</button>
             </nav>
 
+            <button onclick="openSettings()" title="Pengaturan Database Supabase" style="background: #F3EBDD; border: 1px solid #E8DCC8; padding: 8px 12px; border-radius: 50%; cursor: pointer; font-size: 0.9em; margin-right: 8px;" class="nav-btn">⚙️</button>
             <div class="header-profile" onclick="switchTab('profile')" title="Lihat Profil">
                 <img id="headerAvatarImg" src="assets/Ayam.webp" alt="Active Avatar" class="header-avatar">
                 <div class="header-user-info">
@@ -167,5 +168,44 @@
     <div id="toastNotification" class="toast-notification">✨ Berhasil!</div>
 
     <script src="app.js"></script>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(61,43,31,0.4); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: #FFFDF8; border: 1px solid #E8DCC8; padding: 30px; border-radius: 20px; width: 90%; max-width: 440px; box-shadow: 0 15px 40px rgba(120,80,40,0.2);">
+            <h3 style="margin-bottom: 12px; font-size: 1.2em; color: #3D2B1F;">⚙️ Pengaturan Supabase</h3>
+            <p style="font-size: 0.85em; color: #8A7560; margin-bottom: 15px;">Simpan URL & Anon Key sekali saja. Tersimpan aman di browser kamu!</p>
+            <label style="font-size: 0.8em; font-weight: 700; color: #3D2B1F; display: block; margin-bottom: 4px;">Supabase URL:</label>
+            <input type="text" id="modalUrl" class="form-input" style="margin-bottom: 10px;">
+            <label style="font-size: 0.8em; font-weight: 700; color: #3D2B1F; display: block; margin-bottom: 4px;">Supabase Anon Key:</label>
+            <textarea id="modalKey" class="form-textarea" style="height: 80px; margin-bottom: 15px; resize: none;"></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button onclick="closeSettings()" class="secondary-btn">Batal</button>
+                <button onclick="saveSettings()" class="primary-btn">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openSettings() {
+            document.getElementById('modalUrl').value = localStorage.getItem('sb_url') || 'https://hremnjvcaklvppqyncti.supabase.co';
+            document.getElementById('modalKey').value = localStorage.getItem('sb_key') || '';
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+        function saveSettings() {
+            const url = document.getElementById('modalUrl').value.trim();
+            const key = document.getElementById('modalKey').value.trim();
+            if (url && key) {
+                localStorage.setItem('sb_url', url);
+                localStorage.setItem('sb_key', key);
+                alert('Konfigurasi Supabase berhasil disimpan! Halaman akan dimuat ulang.');
+                location.reload();
+            } else {
+                alert('URL dan Key tidak boleh kosong!');
+            }
+        }
+    </script>
+
 </body>
 </html>
