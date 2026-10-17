@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Pixel Vault & To-Do Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Minimalist Header -->
+        <header class="usrc-header">
+            <div class="brand">
+                <div class="brand-box">👾</div>
+                <div class="brand-text">
+                    <strong>PIXEL VAULT</strong>
+                    <span>// BY ADITYA (DIDITT)</span>
+                </div>
+            </div>
+            
+            <nav class="usrc-nav">
+                <button class="nav-btn" onclick="switchTab('vault')">🐾 VAULT</button>
+                <button class="nav-btn" onclick="switchTab('todo')">📝 TO-DO</button>
+                <button class="nav-btn active" id="btnProfile" onclick="switchTab('profile')">👤 PROFIL</button>
+                <button class="nav-btn" onclick="switchTab('showcase')">🎨 SHOWCASE</button>
+            </nav>
+
+            <div class="user-badge" style="display: flex; align-items: center; gap: 10px;">
+                <div>
+                    <strong>Aditya Prayoga</strong>
+                    <span class="badge-role">CREATOR</span>
+                </div>
+                <button onclick="openSettings()" title="Pengaturan Supabase" style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Subtle Marquee Bar -->
+        <div class="marquee-bar">
+            <span>// MINI PIXEL VAULT // STUDY TO-DO LIST // PROJECT SHOWCASE // PROFIL SAYA //</span>
+        </div>
+
+        <!-- View 1: Pixel Vault (Galeri Hewan) -->
+        <section id="vaultView" class="view-section">
+            <div class="tag-box">// KOLEKSI ASET</div>
+            <h2>PIXEL ART ANIMALS VAULT</h2>
+            <p class="section-desc">Klik salah satu hewan di bawah untuk mengganti Avatar Profil Aktifmu!</p>
+            <div class="animal-grid" id="animalGrid"></div>
+        </section>
+
+        <!-- View 2: To-Do Dashboard -->
+        <section id="todoView" class="view-section">
+            <div class="tag-box">// MANAJEMEN TUGAS</div>
+            <h2>STUDY & PROJECT TO-DO LIST</h2>
+            <div class="todo-form">
+                <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru...">
+                <button id="addTaskBtn">TAMBAH (+)</button>
+            </div>
+            <ul id="todoList" class="todo-list"></ul>
+        </section>
+
+        <!-- View 3: Page Profil -->
+        <section id="profileView" class="view-section active">
+            <div class="tag-box">// KARTU ANGGOTA</div>
+            <h2>PROFIL <span class="text-accent">SAYA</span></h2>
+
+            <div class="profile-card">
+                <div class="card-inner">
+                    <div class="avatar-area">
+                        <div class="avatar-frame">
+                            <img id="profileAvatarImg" src="assets/Ayam.webp" alt="Avatar">
+                        </div>
+                        <span class="est-badge">[EST. 2026]</span>
+                        <button class="change-avatar-btn" onclick="switchTab('vault')">✏️ GANTI AVATAR</button>
+                    </div>
+                    <div class="profile-details">
+                        <span class="active-tag">// PIXEL ARTIST & DEVELOPER</span>
+                        <h3 class="profile-name">ADITYA PRAYOGA</h3>
+                        <p class="profile-bio"><em>"Konsistensi dan ketekunan adalah kunci merangkai setiap piksel."</em></p>
+                        
+                        <div class="info-grid">
+                            <div class="info-box">
+                                <span class="info-label">PROJECT</span>
+                                <span class="info-val">MINI PIXEL VAULT</span>
+                            </div>
+                            <div class="info-box">
+                                <span class="info-label">STACK</span>
+                                <span class="info-val">HTML/CSS/JS + SUPABASE</span>
+                            </div>
+                            <div class="info-box accent">
+                                <span class="info-label">STATUS</span>
+                                <span class="info-val">ACTIVE SOLO DEV</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 4: Project Showcase (Galeri Karya Selesai) -->
+        <section id="showcaseView" class="view-section">
+            <div class="tag-box">// HALL OF FAME</div>
+            <h2>PROJECT SHOWCASE</h2>
+            <p class="section-desc">Abadikan hasil karya atau proyek yang telah selesai dikerjakan agar abadi dalam portofoliomu!</p>
+            
+            <div class="showcase-form">
+                <h3 class="form-title">✨ Tambah Karya Baru</h3>
+                <input type="text" id="projectTitle" placeholder="Judul Proyek / Karya..." class="form-input">
+                <textarea id="projectDesc" placeholder="Ceritakan sedikit tentang proyek atau karya ini..." class="form-textarea"></textarea>
+                
+                <!-- Modern Dropzone / Upload Box -->
+                <div class="upload-zone" onclick="document.getElementById('projectFile').click()">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <strong id="uploadLabel">Klik untuk pilih foto / dokumen proyek</strong>
+                        <span>Mendukung format Gambar (PNG, JPG, WebP), PDF, ZIP</span>
+                    </div>
+                    <input type="file" id="projectFile" accept="image/*,.pdf,.zip,.png,.webp,.jpg" onchange="updateFileName(this)" style="display: none;">
+                </div>
+
+                <button onclick="addShowcaseProject()" class="submit-showcase-btn">🚀 Abadikan ke Showcase</button>
+            </div>
+
+            <div class="showcase-grid" id="showcaseGrid">
+                <!-- Rendered via JS -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Mini Pixel Vault • Built with passion by Aditya (Diditt) • 2026</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom: 12px; font-size: 1.2em; color: #0f172a;">⚙️ Pengaturan Supabase</h3>
+            <p style="font-size: 0.85em; color: #64748b; margin-bottom: 15px;">Simpan URL & Anon Key sekali saja. Tersimpan otomatis di browser!</p>
+            <label style="font-size: 0.8em; font-weight: 600; color: #334155; display: block; margin-bottom: 4px;">Supabase URL:</label>
+            <input type="text" id="modalUrl" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9em; margin-bottom: 10px;">
+            <label style="font-size: 0.8em; font-weight: 600; color: #334155; display: block; margin-bottom: 4px;">Supabase Anon Key:</label>
+            <textarea id="modalKey" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9em; height: 70px; margin-bottom: 15px; resize: none;"></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button onclick="closeSettings()" style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">Batal</button>
+                <button onclick="saveSettings()" style="background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openSettings() {
+            document.getElementById('modalUrl').value = localStorage.getItem('sb_url') || 'https://hremnjvcaklvppqyncti.supabase.co';
+            document.getElementById('modalKey').value = localStorage.getItem('sb_key') || '';
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+        function saveSettings() {
+            const url = document.getElementById('modalUrl').value.trim();
+            const key = document.getElementById('modalKey').value.trim();
+            if (url && key) {
+                localStorage.setItem('sb_url', url);
+                localStorage.setItem('sb_key', key);
+                alert('Konfigurasi Supabase berhasil disimpan! Halaman akan dimuat ulang.');
+                location.reload();
+            } else {
+                alert('URL dan Key tidak boleh kosong!');
+            }
+        }
+    </script>
+</body>
+
+</html>
