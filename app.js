@@ -298,3 +298,12 @@ function updateFileName(input) {
         label.textContent = 'Klik untuk pilih foto / dokumen proyek';
     }
 }
+
+// Explicit window bindings for inline HTML onclick handlers
+window.switchTab = switchTab;
+window.selectAvatar = selectAvatar;
+window.addShowcaseProject = addShowcaseProject;
+window.deleteShowcase = deleteShowcase;
+window.updateFileName = updateFileName;
+window.toggleTodo = toggleTodo;
+window.deleteTodo = deleteTodo;
