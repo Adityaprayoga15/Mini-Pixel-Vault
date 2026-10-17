@@ -409,3 +409,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTodos();
     console.log("Mini Pixel Vault (Cozy Café) loaded successfully!");
 });
+
+
+function clearDueDate() {
+    document.getElementById('dueDate').value = '';
+}
+window.clearDueDate = clearDueDate;
