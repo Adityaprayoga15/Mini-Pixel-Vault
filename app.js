@@ -110,6 +110,23 @@ function updateFileName(input) {
     }
 }
 
+// Date Add Helper
+function addDays(days) {
+    const input = document.getElementById('dueDate');
+    let baseDate = input.value ? new Date(input.value) : new Date();
+    
+    if (isNaN(baseDate.getTime())) {
+        baseDate = new Date();
+    }
+    
+    baseDate.setDate(baseDate.getDate() + days);
+    
+    const year = baseDate.getFullYear();
+    const month = String(baseDate.getMonth() + 1).padStart(2, '0');
+    const day = String(baseDate.getDate()).padStart(2, '0');
+    input.value = `${year}-${month}-${day}`;
+}
+
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
 const DEFAULT_SUPABASE_URL = 'https://hremnjvcaklvppqyncti.supabase.co';
 const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZW1uanZjYWtsdnBwcXluY3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDkzMDYsImV4cCI6MjEwNzgyNTMwNn0.7MpiCFGuK8W3YdwOMnLXTU2LerjUBkZX2af3skY3U2E'; 
@@ -133,7 +150,7 @@ const todoList = document.getElementById('todoList');
 
 async function fetchTodos() {
     if (!supabaseClient) {
-        todoList.innerHTML = `<li class="todo-item" style="color: #C8794A; justify-content: center; flex-direction: column; gap: 5px; text-align: center;"><span>⚠️ Supabase Anon Key belum diatur di browser ini.</span><span style="font-size: 0.85em; color: #8A7560;">Klik ikon roda gigi ⚙️ di pojok kanan atas header untuk memasukkan key kamu sekali saja.</span></li>`;
+        todoList.innerHTML = `<li class="todo-item" style="color: #C8794A; justify-content: center; flex-direction: column; gap: 5px; text-align: center;"><span>⚠️ Supabase Anon Key belum diatur.</span></li>`;
         return;
     }
 
@@ -228,23 +245,6 @@ async function addTodo() {
     document.getElementById('dueDate').value = '';
     fetchTodos();
     showToast("✨ Tugas baru berhasil ditambahkan!");
-}
-
-function addDays(days) {
-    const input = document.getElementById('dueDate');
-    let baseDate = input.value ? new Date(input.value) : new Date();
-    
-    if (isNaN(baseDate.getTime())) {
-        baseDate = new Date();
-    }
-    
-    baseDate.setDate(baseDate.getDate() + days);
-    
-    const year = baseDate.getFullYear();
-    const month = String(baseDate.getMonth() + 1).padStart(2, '0');
-    const day = String(baseDate.getDate()).padStart(2, '0');
-    input.value = `${year}-${month}-${day}`;
-}-${month}-${day}`;
 }
 
 async function deleteTodo(id) {
@@ -360,6 +360,29 @@ function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function openSettings() {
+    document.getElementById('modalUrl').value = localStorage.getItem('sb_url') || DEFAULT_SUPABASE_URL;
+    document.getElementById('modalKey').value = localStorage.getItem('sb_key') || DEFAULT_SUPABASE_ANON_KEY;
+    document.getElementById('settingsModal').style.display = 'flex';
+}
+
+function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+}
+
+function saveSettings() {
+    const url = document.getElementById('modalUrl').value.trim();
+    const key = document.getElementById('modalKey').value.trim();
+    if (url && key) {
+        localStorage.setItem('sb_url', url);
+        localStorage.setItem('sb_key', key);
+        alert('Konfigurasi Supabase berhasil disimpan! Halaman akan dimuat ulang.');
+        location.reload();
+    } else {
+        alert('URL dan Key tidak boleh kosong!');
+    }
+}
+
 // Global Window Bindings
 window.switchTab = switchTab;
 window.selectAvatar = selectAvatar;
@@ -370,6 +393,10 @@ window.deleteShowcase = deleteShowcase;
 window.updateFileName = updateFileName;
 window.toggleTodo = toggleTodo;
 window.deleteTodo = deleteTodo;
+window.addDays = addDays;
+window.openSettings = openSettings;
+window.closeSettings = closeSettings;
+window.saveSettings = saveSettings;
 
 if (addTaskBtn) addTaskBtn.addEventListener('click', addTodo);
 if (taskInput) taskInput.addEventListener('keypress', (e) => {
@@ -382,7 +409,3 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTodos();
     console.log("Mini Pixel Vault (Cozy Café) loaded successfully!");
 });
-
-window.openSettings = openSettings;
-
-window.addDays = addDays;
