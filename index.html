@@ -76,17 +76,18 @@
             <div class="todo-form" style="flex-direction: column; gap: 10px;">
                 <input type="text" id="taskInput" placeholder="Tambah tugas belajar baru..." style="width: 100%; margin-bottom: 0;">
                 
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: #FAF5EC; padding: 8px 12px; border-radius: 10px; border: 1px solid #E8DCC8;">
-                    <div style="display: flex; align-items: center; gap: 6px; font-size: 0.8em; color: #8A7560; flex-wrap: wrap;">
-                        <span>⏳ Target:</span>
-                        <input type="date" id="dueDate" class="form-input" style="margin-bottom: 0; padding: 4px 8px; font-size: 0.8em; width: auto;">
-                        <div style="display: flex; gap: 4px; margin-left: 4px;">
-                            <button type="button" onclick="setQuickDate(0)" style="background: #FFFDF8; border: 1px solid #E8DCC8; padding: 3px 8px; border-radius: 6px; font-size: 0.75em; cursor: pointer; color: #3D2B1F;">Hari Ini</button>
-                            <button type="button" onclick="setQuickDate(1)" style="background: #FFFDF8; border: 1px solid #E8DCC8; padding: 3px 8px; border-radius: 6px; font-size: 0.75em; cursor: pointer; color: #3D2B1F;">Besok</button>
-                            <button type="button" onclick="setQuickDate(7)" style="background: #FFFDF8; border: 1px solid #E8DCC8; padding: 3px 8px; border-radius: 6px; font-size: 0.75em; cursor: pointer; color: #3D2B1F;">+1 Minggu</button>
+                <div class="todo-toolbar">
+                    <div class="deadline-picker-group">
+                        <span class="deadline-icon">⏳</span>
+                        <span class="deadline-label">Deadline:</span>
+                        <input type="date" id="dueDate" class="date-input-clean">
+                        <div class="quick-chips">
+                            <button type="button" class="chip-btn" onclick="setQuickDate(0)">Hari Ini</button>
+                            <button type="button" class="chip-btn" onclick="setQuickDate(1)">Besok</button>
+                            <button type="button" class="chip-btn" onclick="setQuickDate(7)">+1 Minggu</button>
                         </div>
                     </div>
-                    <button id="addTaskBtn" style="margin-left: auto; padding: 8px 16px; font-size: 0.9em;">Tambah Tugas (+)</button>
+                    <button id="addTaskBtn" class="primary-btn" style="padding: 10px 20px; font-size: 0.9em;">Tambah Tugas (+)</button>
                 </div>
             </div>
             <ul id="todoList" class="todo-list"></ul>
