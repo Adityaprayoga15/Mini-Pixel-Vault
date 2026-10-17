@@ -72,7 +72,19 @@ function selectAvatar(filename) {
     localStorage.setItem('userAvatar', filename);
     renderAnimals();
     updateProfileAvatar();
-    alert(`Avatar profil berhasil diubah ke ${animals.find(a => a.file === filename).name}!`);
+    const animalName = animals.find(a => a.file === filename).name;
+    showToast(`✨ Avatar berhasil diubah ke ${animalName}!`);
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toastNotification');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2500);
+}!`);
 }
 
 // SUPABASE CONFIG & TO-DO / SHOWCASE LOGIC
